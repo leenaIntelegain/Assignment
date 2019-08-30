@@ -1,0 +1,61 @@
+{% extends "foodcourt.html" %}
+
+{% block content %}
+<h1>
+  {{ restaurant }}
+</h1>
+
+<style>
+h4 {
+	margin: 0 0 10px 0;
+}
+p {
+	margin:0;
+}
+</style>
+
+<ul class=list-group>
+
+
+
+
+{% if menu_details %}
+{% for each_menu in menu_details %}
+<li class="list-group-item">
+
+     
+<div class="row">
+<div class="col-sm-6">
+      <h4>{{ each_menu.name }}</h4>
+                            <h6>Category <a href="{{ product.category.get_absolute_url }}">{{ each_menu.category }}</a></h6>
+                            <p class="text-muted">RS. {{ each_menu.price }}</p>
+</div>
+<div class="col-sm-6 text-right">
+ <form action="{% url "cart_add" each_menu.id %}" method="post">
+                                {% csrf_token %}
+                                {{ cart_product_form }}
+
+                                <input type="submit" value="add to cart" class="btn btn-primary"> 
+                                <!-- <input id="res_id" name="res_id" value="{{res_id}}" 
+                                   type="text" hidden="true">
+ -->
+                            </form>
+</div>
+</div>
+
+
+                      
+                           
+                            {% if each_menu.description %}
+                            <p>{{ each_menu.description|safe|linebreaksbr }}</p>
+                            {% endif %}
+              
+
+</li>      
+{% endfor %}
+
+{% endif %}
+</ul>
+
+{% endblock %}
+

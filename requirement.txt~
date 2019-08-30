@@ -1,0 +1,7 @@
+psycopg2
+Django
+djangorestframework
+djangorestframework-jwt
+requests==2.18.4
+requests-oauthlib==0.8.0
+django-import-export

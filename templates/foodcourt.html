@@ -1,0 +1,78 @@
+{% extends "home.html"  %}
+
+<div class="container-fluid">
+
+<div id="content">
+  {% block content %}
+    <h1>Food Court</h1>
+    <p>Welcome to Food Court, a website developed by <em>Intelegain</em>!</p>
+
+    <p><a href="{% url 'order_details' %}">Check your orders</a></p>
+
+    <form action="{% url 'search_restaurants' %}" method="get">
+      <!-- {% csrf_token %} -->
+      <p>Search Restaurants:</p>
+      <div class="form-inline">
+      <input type="text" id="search" class="form-control" name="search" placeholder="Search..">
+      <button type="submit" class="btn btn-success">Submit</button>
+      </div>
+
+      {% if restaurants %}
+        <table id="myTable" class="table table-bordered table-hover">
+          <tr class="header">
+            <th style="width:60%;">Restaurant Name</th>
+            <th style="width:40%;">Image</th>
+          </tr>
+          {% for each_restaurants in restaurants %}
+               <tr class="restaurant" id="{{ each_restaurants.restaurant.id }}" >
+                <td>{{each_restaurants.restaurant.name}}</td>
+                <td><img src={{each_restaurants.restaurant.thumb}} width="100"></td>
+              </tr>
+          {% endfor %}
+
+          <div class="pagination">
+
+            <span class="step-links">
+
+                {% if restaurants.has_previous %}
+
+                    <a href="?page={{ restaurants.previous_page_number }}">previous</a>
+
+                {% endif %}
+
+                <span class="current">
+
+                    Page {{ restaurants.results_shown }} of {{ restaurants.paginator.num_pages }}.
+
+                </span>
+
+                {% if restaurants.has_next %}
+
+                    <a href="?page={{ restaurants.next_page_number }}">next</a>
+
+                {% endif %}
+
+            </span>
+
+          </div>
+        </table>
+      {% endif %}
+      {% if restaurant_details %}
+        <p>address : {{ restaurant_details.location.address }}</p>
+      {% endif %}
+
+    </form>
+    {% if error_message %}<p><strong>{{ error_message}}</strong></p>{% endif %}
+  {% endblock %}
+</div>
+
+<script>
+  $(".restaurant").on('click', function(){
+    var res_id = $(this).attr('id');
+    window.location.href = '/foodcourt/restaurant-details/?res_id=' + res_id;
+  });
+</script>
+</div>
+<div id="footer">
+  {% block footer %}{% endblock %}
+</div>
